@@ -17,8 +17,8 @@ class BusServiceProvider extends ServiceProvider
     {
         $container = $this->getContainerBuilder();
 
-        $container->register(SynchronousCommandBus::class)->setPublic(true);
-        $container->register(SynchronousQueryBus::class)->setPublic(true);
+        $container->register(SynchronousCommandBus::class, SynchronousCommandBus::class)->setPublic(true);
+        $container->register(SynchronousQueryBus::class, SynchronousQueryBus::class)->setPublic(true);
 
         $container->setAlias(CommandBusInterface::class, SynchronousCommandBus::class)->setPublic(true);
         $container->setAlias(QueryBusInterface::class, SynchronousQueryBus::class)->setPublic(true);
