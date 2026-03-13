@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Momo\Bus;
 
-use Momo\Contracts\Bus\CommandBusInterface;
-use Momo\Contracts\Bus\CommandHandlerInterface;
-use Momo\Contracts\Bus\CommandInterface;
+use Contracts\CommandBusInterface;
+use Contracts\CommandHandlerInterface;
+use Contracts\CommandInterface;
 
 final class SynchronousCommandBus implements CommandBusInterface
 {

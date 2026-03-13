@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Unit;
 
+use Contracts\QueryHandlerInterface;
+use Contracts\QueryInterface;
 use Momo\Bus\SynchronousQueryBus;
-use Momo\Contracts\Bus\QueryHandlerInterface;
-use Momo\Contracts\Bus\QueryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

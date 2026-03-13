@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Momo\Bus\Tests\Unit;
 
+use Contracts\CommandHandlerInterface;
+use Contracts\CommandInterface;
 use Momo\Bus\SynchronousCommandBus;
-use Momo\Contracts\Bus\CommandHandlerInterface;
-use Momo\Contracts\Bus\CommandInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
