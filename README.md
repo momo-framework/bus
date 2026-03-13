@@ -6,15 +6,9 @@
   <p>Synchronous CQRS Command & Query buses for <a href="https://github.com/momo-framework">Momo Framework</a></p>
 
   <p>
-    <a href="https://github.com/momo-framework/bus/actions/workflows/ci.yml">
-      <img src="https://github.com/momo-framework/bus/actions/workflows/ci.yml/badge.svg" alt="CI" />
-    </a>
-    <a href="https://packagist.org/packages/momo-framework/bus">
-      <img src="https://img.shields.io/packagist/v/momo-framework/bus.svg?style=flat" alt="Latest Version" />
-    </a>
-    <a href="https://packagist.org/packages/momo-framework/bus">
-      <img src="https://img.shields.io/packagist/dt/momo-framework/bus.svg?style=flat" alt="Total Downloads" />
-    </a>
+    <img src="https://github.com/momo-framework/bus/actions/workflows/ci.yml/badge.svg" alt="CI" />
+    <img src="https://img.shields.io/packagist/v/momo-framework/bus.svg?style=flat" alt="Latest Version" />
+    <img src="https://img.shields.io/packagist/dt/momo-framework/bus.svg?style=flat" alt="Total Downloads" />
     <img src="https://img.shields.io/badge/php-%3E%3D8.5-8892bf.svg" alt="PHP Version" />
     <img src="https://img.shields.io/badge/license-proprietary-red.svg" alt="License" />
     <img src="https://img.shields.io/badge/coverage-100%25-brightgreen.svg" alt="Coverage" />
