@@ -1,13 +1,31 @@
 {
   "name": "momo-framework/bus",
+  "description": "Synchronous CQRS Command and Query buses for Momo Framework",
   "type": "library",
+  "license": "proprietary",
   "require": {
     "php": ">=8.4",
     "momo-framework/contracts": "*",
     "momo-framework/kernel": "*"
   },
+  "require-dev": {
+    "phpunit/phpunit": "^11.0",
+    "phpstan/phpstan": "^2.1"
+  },
+  "repositories": [
+    { "type": "path", "url": "../contracts", "options": { "symlink": true } },
+    { "type": "path", "url": "../kernel",    "options": { "symlink": true } }
+  ],
+  "minimum-stability": "dev",
   "autoload": {
-    "psr-4": { "Momo\\Bus\\": "../bus/src/"}
+    "psr-4": {
+      "Momo\\Bus\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Momo\\Bus\\Tests\\": "tests/"
+    }
   },
   "extra": {
     "momo": {
@@ -15,5 +33,10 @@
         "Momo\\Bus\\BusServiceProvider"
       ]
     }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit",
+    "test:coverage": "vendor/bin/phpunit --coverage-text",
+    "stan": "vendor/bin/phpstan analyse src --level=10"
   }
 }

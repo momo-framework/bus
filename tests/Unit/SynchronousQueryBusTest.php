@@ -1,0 +1,217 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Unit;
+
+use Momo\Bus\SynchronousQueryBus;
+use Momo\Contracts\Bus\QueryHandlerInterface;
+use Momo\Contracts\Bus\QueryInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
+use RuntimeException;
+
+#[CoversClass(SynchronousQueryBus::class)]
+final class SynchronousQueryBusTest extends TestCase
+{
+    private SynchronousQueryBus $bus;
+
+    protected function setUp(): void
+    {
+        $this->bus = new SynchronousQueryBus();
+    }
+
+    // -------------------------------------------------------------------------
+    // ask()
+    // -------------------------------------------------------------------------
+
+    #[Test]
+    public function ask_returns_value_from_handler(): void
+    {
+        $query   = $this->makeQuery();
+        $handler = $this->makeQueryHandler(fn() => ['id' => 1, 'name' => 'test']);
+
+        $this->bus->register($query::class, $handler);
+
+        self::assertSame(['id' => 1, 'name' => 'test'], $this->bus->ask($query));
+    }
+
+    #[Test]
+    public function ask_returns_null_when_handler_returns_null(): void
+    {
+        $query   = $this->makeQuery();
+        $handler = $this->makeQueryHandler(fn() => null);
+
+        $this->bus->register($query::class, $handler);
+
+        self::assertNull($this->bus->ask($query));
+    }
+
+    #[Test]
+    public function ask_returns_scalar_value(): void
+    {
+        $query   = $this->makeQuery();
+        $handler = $this->makeQueryHandler(fn() => 42);
+
+        $this->bus->register($query::class, $handler);
+
+        self::assertSame(42, $this->bus->ask($query));
+    }
+
+    #[Test]
+    public function ask_returns_object_value(): void
+    {
+        $query    = $this->makeQuery();
+        $expected = new \stdClass();
+        $handler  = $this->makeQueryHandler(fn() => $expected);
+
+        $this->bus->register($query::class, $handler);
+
+        self::assertSame($expected, $this->bus->ask($query));
+    }
+
+    #[Test]
+    public function ask_passes_exact_query_instance_to_handler(): void
+    {
+        $query    = $this->makeQuery();
+        $received = null;
+
+        $handler = $this->makeQueryHandler(function (QueryInterface $q) use (&$received) {
+            $received = $q;
+            return null;
+        });
+
+        $this->bus->register($query::class, $handler);
+        $this->bus->ask($query);
+
+        self::assertSame($query, $received);
+    }
+
+    #[Test]
+    public function ask_throws_when_no_handler_registered(): void
+    {
+        $query = $this->makeQuery();
+
+        $this->expectException(RuntimeException::class);
+        $this->bus->ask($query);
+    }
+
+    #[Test]
+    public function ask_exception_message_contains_query_class_name(): void
+    {
+        $query = $this->makeQuery();
+
+        try {
+            $this->bus->ask($query);
+            self::fail('RuntimeException expected');
+        } catch (RuntimeException $e) {
+            self::assertStringContainsString($query::class, $e->getMessage());
+        }
+    }
+
+    #[Test]
+    public function ask_calls_handler_exactly_once(): void
+    {
+        $callCount = 0;
+        $query     = $this->makeQuery();
+        $handler   = $this->makeQueryHandler(function () use (&$callCount) {
+            $callCount++;
+            return null;
+        });
+
+        $this->bus->register($query::class, $handler);
+        $this->bus->ask($query);
+
+        self::assertSame(1, $callCount);
+    }
+
+    #[Test]
+    public function ask_routes_each_query_type_to_correct_handler(): void
+    {
+        $queryA = $this->makeQuery();
+        $queryB = $this->makeQuery();
+
+        $handlerA = $this->makeQueryHandler(fn() => 'result-a');
+        $handlerB = $this->makeQueryHandler(fn() => 'result-b');
+
+        $this->bus->register($queryA::class, $handlerA);
+        $this->bus->register($queryB::class, $handlerB);
+
+        self::assertSame('result-a', $this->bus->ask($queryA));
+        self::assertSame('result-b', $this->bus->ask($queryB));
+    }
+
+    #[Test]
+    public function ask_does_not_call_wrong_handler(): void
+    {
+        $queryA = $this->makeQuery();
+        $queryB = $this->makeQuery();
+
+        $called  = false;
+        $handlerA = $this->makeQueryHandler(fn() => null);
+        $handlerB = $this->makeQueryHandler(function () use (&$called) {
+            $called = true;
+            return null;
+        });
+
+        $this->bus->register($queryA::class, $handlerA);
+        $this->bus->register($queryB::class, $handlerB);
+
+        $this->bus->ask($queryA);
+
+        self::assertFalse($called);
+    }
+
+    // -------------------------------------------------------------------------
+    // register()
+    // -------------------------------------------------------------------------
+
+    #[Test]
+    public function register_overwrites_previous_handler_for_same_query(): void
+    {
+        $query    = $this->makeQuery();
+        $handlerA = $this->makeQueryHandler(fn() => 'first');
+        $handlerB = $this->makeQueryHandler(fn() => 'second');
+
+        $this->bus->register($query::class, $handlerA);
+        $this->bus->register($query::class, $handlerB);
+
+        self::assertSame('second', $this->bus->ask($query));
+    }
+
+    #[Test]
+    public function register_same_handler_instance_for_multiple_queries(): void
+    {
+        $queryA  = $this->makeQuery();
+        $queryB  = $this->makeQuery();
+        $handler = $this->makeQueryHandler(fn() => 'ok');
+
+        $this->bus->register($queryA::class, $handler);
+        $this->bus->register($queryB::class, $handler);
+
+        self::assertSame('ok', $this->bus->ask($queryA));
+        self::assertSame('ok', $this->bus->ask($queryB));
+    }
+
+    // -------------------------------------------------------------------------
+    // Helpers
+    // -------------------------------------------------------------------------
+
+    private function makeQuery(): QueryInterface
+    {
+        return new class implements QueryInterface {};
+    }
+
+    private function makeQueryHandler(callable $returnFn): QueryHandlerInterface
+    {
+        return new class($returnFn) implements QueryHandlerInterface {
+            public function __construct(private readonly mixed $fn) {}
+
+            public function handle(QueryInterface $query): mixed
+            {
+                return ($this->fn)($query);
+            }
+        };
+    }
+}
