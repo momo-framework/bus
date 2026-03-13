@@ -22,10 +22,10 @@
 
 `momo-framework/bus` provides two lightweight, in-process buses for separating **write** and **read** operations in your application — following the [CQRS](https://martinfowler.com/bliki/CQRS.html) pattern.
 
-| Bus | Purpose | Returns |
-|---|---|---|
-| `CommandBus` | Write operations — create, update, delete | `void` |
-| `QueryBus` | Read operations — fetch, list, search | `mixed` |
+| Bus          | Purpose                                   | Returns |
+|--------------|-------------------------------------------|---------|
+| `CommandBus` | Write operations — create, update, delete | `void`  |
+| `QueryBus`   | Read operations — fetch, list, search     | `mixed` |
 
 Both buses enforce a **one-handler-per-message** contract. Registering a second handler for the same message class silently overwrites the first.
 
@@ -281,17 +281,6 @@ composer ci
 
 ---
 
-## Quality
-
-| Metric | Result |
-|---|---|
-| Test coverage | 100% lines, 100% methods |
-| PHPStan level | 10 (max) |
-| PHP version | 8.5+ strict types |
-| Mutation testing | excluded (integration-only provider) |
-
----
-
 <div align="center">
-  <sub>Part of <a href="https://github.com/momo-framework">Momo Framework</a> — high-performance modular e-commerce engine</sub>
+  <sub>Part of <a href="https://github.com/momo-framework">Momo Framework</a> — a high-performance, modular PHP framework for building resilient distributed systems.</sub>
 </div>
