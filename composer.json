@@ -1,0 +1,19 @@
+{
+  "name": "momo-framework/bus",
+  "type": "library",
+  "require": {
+    "php": ">=8.4",
+    "momo-framework/contracts": "*",
+    "momo-framework/kernel": "*"
+  },
+  "autoload": {
+    "psr-4": { "Momo\\Bus\\": "../bus/src/"}
+  },
+  "extra": {
+    "momo": {
+      "providers": [
+        "Momo\\Bus\\BusServiceProvider"
+      ]
+    }
+  }
+}
