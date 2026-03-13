@@ -18,7 +18,7 @@ final class SynchronousQueryBus implements QueryBusInterface
         $class = $query::class;
 
         if (!isset($this->handlers[$class])) {
-            throw new \RuntimeException("No handler registered for query: {$class}");
+            throw new \RuntimeException('No handler registered for query: ' . $class);
         }
 
         return $this->handlers[$class]->handle($query);

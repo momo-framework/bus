@@ -18,7 +18,7 @@ final class SynchronousCommandBus implements CommandBusInterface
         $class = $command::class;
 
         if (!isset($this->handlers[$class])) {
-            throw new \RuntimeException("No handler registered for command: {$class}");
+            throw new \RuntimeException('No handler registered for command: ' . $class);
         }
 
         $this->handlers[$class]->handle($command);

@@ -1,5 +1,6 @@
 /.idea
 /vendor
+/build
 /coverage
 
 .phpunit.cache

@@ -64,8 +64,8 @@ final class SynchronousCommandBusTest extends TestCase
         try {
             $this->bus->dispatch($command);
             self::fail('RuntimeException expected');
-        } catch (RuntimeException $e) {
-            self::assertStringContainsString($command::class, $e->getMessage());
+        } catch (RuntimeException $runtimeException) {
+            self::assertStringContainsString($command::class, $runtimeException->getMessage());
         }
     }
 
@@ -172,7 +172,9 @@ final class SynchronousCommandBusTest extends TestCase
     {
         return new class implements CommandHandlerInterface {
             public bool $called    = false;
+
             public int  $callCount = 0;
+
             public mixed $received = null;
 
             public function handle(CommandInterface $command): void

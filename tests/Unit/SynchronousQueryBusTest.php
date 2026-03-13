@@ -26,7 +26,7 @@ final class SynchronousQueryBusTest extends TestCase
     public function ask_returns_value_from_handler(): void
     {
         $query   = $this->makeQuery();
-        $handler = $this->makeQueryHandler(fn() => ['id' => 1, 'name' => 'test']);
+        $handler = $this->makeQueryHandler(fn(): array => ['id' => 1, 'name' => 'test']);
 
         $this->bus->register($query::class, $handler);
 
@@ -37,7 +37,7 @@ final class SynchronousQueryBusTest extends TestCase
     public function ask_returns_null_when_handler_returns_null(): void
     {
         $query   = $this->makeQuery();
-        $handler = $this->makeQueryHandler(fn() => null);
+        $handler = $this->makeQueryHandler(fn(): null => null);
 
         $this->bus->register($query::class, $handler);
 
@@ -48,7 +48,7 @@ final class SynchronousQueryBusTest extends TestCase
     public function ask_returns_scalar_value(): void
     {
         $query   = $this->makeQuery();
-        $handler = $this->makeQueryHandler(fn() => 42);
+        $handler = $this->makeQueryHandler(fn(): int => 42);
 
         $this->bus->register($query::class, $handler);
 
@@ -60,7 +60,7 @@ final class SynchronousQueryBusTest extends TestCase
     {
         $query    = $this->makeQuery();
         $expected = new \stdClass();
-        $handler  = $this->makeQueryHandler(fn() => $expected);
+        $handler  = $this->makeQueryHandler(fn(): \stdClass => $expected);
 
         $this->bus->register($query::class, $handler);
 
@@ -73,7 +73,7 @@ final class SynchronousQueryBusTest extends TestCase
         $query    = $this->makeQuery();
         $received = null;
 
-        $handler = $this->makeQueryHandler(function (QueryInterface $q) use (&$received) {
+        $handler = $this->makeQueryHandler(function (QueryInterface $q) use (&$received): null {
             $received = $q;
             return null;
         });
@@ -101,8 +101,8 @@ final class SynchronousQueryBusTest extends TestCase
         try {
             $this->bus->ask($query);
             self::fail('RuntimeException expected');
-        } catch (RuntimeException $e) {
-            self::assertStringContainsString($query::class, $e->getMessage());
+        } catch (RuntimeException $runtimeException) {
+            self::assertStringContainsString($query::class, $runtimeException->getMessage());
         }
     }
 
@@ -111,7 +111,7 @@ final class SynchronousQueryBusTest extends TestCase
     {
         $callCount = 0;
         $query     = $this->makeQuery();
-        $handler   = $this->makeQueryHandler(function () use (&$callCount) {
+        $handler   = $this->makeQueryHandler(function () use (&$callCount): null {
             $callCount++;
             return null;
         });
@@ -128,8 +128,8 @@ final class SynchronousQueryBusTest extends TestCase
         $queryA = new class implements QueryInterface {};
         $queryB = new class implements QueryInterface {};
 
-        $handlerA = $this->makeQueryHandler(fn() => 'result-a');
-        $handlerB = $this->makeQueryHandler(fn() => 'result-b');
+        $handlerA = $this->makeQueryHandler(fn(): string => 'result-a');
+        $handlerB = $this->makeQueryHandler(fn(): string => 'result-b');
 
         $this->bus->register($queryA::class, $handlerA);
         $this->bus->register($queryB::class, $handlerB);
@@ -145,8 +145,8 @@ final class SynchronousQueryBusTest extends TestCase
         $queryB = new class implements QueryInterface {};
 
         $called   = false;
-        $handlerA = $this->makeQueryHandler(fn() => null);
-        $handlerB = $this->makeQueryHandler(function () use (&$called) {
+        $handlerA = $this->makeQueryHandler(fn(): null => null);
+        $handlerB = $this->makeQueryHandler(function () use (&$called): null {
             $called = true;
             return null;
         });
@@ -163,8 +163,8 @@ final class SynchronousQueryBusTest extends TestCase
     public function register_overwrites_previous_handler_for_same_query(): void
     {
         $query    = $this->makeQuery();
-        $handlerA = $this->makeQueryHandler(fn() => 'first');
-        $handlerB = $this->makeQueryHandler(fn() => 'second');
+        $handlerA = $this->makeQueryHandler(fn(): string => 'first');
+        $handlerB = $this->makeQueryHandler(fn(): string => 'second');
 
         $this->bus->register($query::class, $handlerA);
         $this->bus->register($query::class, $handlerB);
@@ -177,7 +177,7 @@ final class SynchronousQueryBusTest extends TestCase
     {
         $queryA  = $this->makeQuery();
         $queryB  = $this->makeQuery();
-        $handler = $this->makeQueryHandler(fn() => 'ok');
+        $handler = $this->makeQueryHandler(fn(): string => 'ok');
 
         $this->bus->register($queryA::class, $handler);
         $this->bus->register($queryB::class, $handler);

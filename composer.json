@@ -42,6 +42,13 @@
     "test": "vendor/bin/phpunit",
     "test:coverage": "vendor/bin/phpunit --coverage-text",
     "stan": "vendor/bin/phpstan analyse src --level=10",
-    "rector": "vendor/bin/rector process --dry-run"
+    "rector:check": "rector process --dry-run",
+    "rector:fix": "rector process",
+    "ci": [
+      "@lint",
+      "@stan",
+      "@rector:check",
+      "@test"
+    ]
   }
 }
