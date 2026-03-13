@@ -84,8 +84,8 @@ final class SynchronousCommandBusTest extends TestCase
     #[Test]
     public function dispatch_calls_correct_handler_for_each_command_type(): void
     {
-        $commandA = $this->makeCommand();
-        $commandB = $this->makeCommand();
+        $commandA = new class implements CommandInterface {};
+        $commandB = new class implements CommandInterface {};
 
         $handlerA = $this->makeCommandHandler();
         $handlerB = $this->makeCommandHandler();
@@ -102,8 +102,8 @@ final class SynchronousCommandBusTest extends TestCase
     #[Test]
     public function dispatch_can_handle_multiple_commands_of_different_types(): void
     {
-        $commandA = $this->makeCommand();
-        $commandB = $this->makeCommand();
+        $commandA = new class implements CommandInterface {};
+        $commandB = new class implements CommandInterface {};
 
         $handlerA = $this->makeCommandHandler();
         $handlerB = $this->makeCommandHandler();

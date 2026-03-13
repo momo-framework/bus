@@ -22,10 +22,6 @@ final class SynchronousQueryBusTest extends TestCase
         $this->bus = new SynchronousQueryBus();
     }
 
-    // -------------------------------------------------------------------------
-    // ask()
-    // -------------------------------------------------------------------------
-
     #[Test]
     public function ask_returns_value_from_handler(): void
     {
@@ -129,8 +125,8 @@ final class SynchronousQueryBusTest extends TestCase
     #[Test]
     public function ask_routes_each_query_type_to_correct_handler(): void
     {
-        $queryA = $this->makeQuery();
-        $queryB = $this->makeQuery();
+        $queryA = new class implements QueryInterface {};
+        $queryB = new class implements QueryInterface {};
 
         $handlerA = $this->makeQueryHandler(fn() => 'result-a');
         $handlerB = $this->makeQueryHandler(fn() => 'result-b');
@@ -145,10 +141,10 @@ final class SynchronousQueryBusTest extends TestCase
     #[Test]
     public function ask_does_not_call_wrong_handler(): void
     {
-        $queryA = $this->makeQuery();
-        $queryB = $this->makeQuery();
+        $queryA = new class implements QueryInterface {};
+        $queryB = new class implements QueryInterface {};
 
-        $called  = false;
+        $called   = false;
         $handlerA = $this->makeQueryHandler(fn() => null);
         $handlerB = $this->makeQueryHandler(function () use (&$called) {
             $called = true;
@@ -162,10 +158,6 @@ final class SynchronousQueryBusTest extends TestCase
 
         self::assertFalse($called);
     }
-
-    // -------------------------------------------------------------------------
-    // register()
-    // -------------------------------------------------------------------------
 
     #[Test]
     public function register_overwrites_previous_handler_for_same_query(): void
@@ -194,10 +186,6 @@ final class SynchronousQueryBusTest extends TestCase
         self::assertSame('ok', $this->bus->ask($queryB));
     }
 
-    // -------------------------------------------------------------------------
-    // Helpers
-    // -------------------------------------------------------------------------
-
     private function makeQuery(): QueryInterface
     {
         return new class implements QueryInterface {};
@@ -205,8 +193,8 @@ final class SynchronousQueryBusTest extends TestCase
 
     private function makeQueryHandler(callable $returnFn): QueryHandlerInterface
     {
-        return new class($returnFn) implements QueryHandlerInterface {
-            public function __construct(private readonly mixed $fn) {}
+        return new readonly class($returnFn) implements QueryHandlerInterface {
+            public function __construct(private mixed $fn) {}
 
             public function handle(QueryInterface $query): mixed
             {

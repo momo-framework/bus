@@ -12,16 +12,12 @@ class BusServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->container->register(SynchronousCommandBus::class)
-            ->setPublic(true);
+        $container = $this->getContainerBuilder();
 
-        $this->app->container->register(SynchronousQueryBus::class)
-            ->setPublic(true);
+        $container->register(SynchronousCommandBus::class)->setPublic(true);
+        $container->register(SynchronousQueryBus::class)->setPublic(true);
 
-        $this->app->container->setAlias(CommandBusInterface::class, SynchronousCommandBus::class)
-            ->setPublic(true);
-
-        $this->app->container->setAlias(QueryBusInterface::class, SynchronousQueryBus::class)
-            ->setPublic(true);
+        $container->setAlias(CommandBusInterface::class, SynchronousCommandBus::class)->setPublic(true);
+        $container->setAlias(QueryBusInterface::class, SynchronousQueryBus::class)->setPublic(true);
     }
 }
