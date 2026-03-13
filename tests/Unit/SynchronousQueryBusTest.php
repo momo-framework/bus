@@ -193,7 +193,7 @@ final class SynchronousQueryBusTest extends TestCase
 
     private function makeQueryHandler(callable $returnFn): QueryHandlerInterface
     {
-        return new readonly class($returnFn) implements QueryHandlerInterface {
+        return new readonly class ($returnFn) implements QueryHandlerInterface {
             public function __construct(private mixed $fn) {}
 
             public function handle(QueryInterface $query): mixed

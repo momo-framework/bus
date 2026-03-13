@@ -8,6 +8,9 @@ use Momo\Contracts\Bus\CommandBusInterface;
 use Momo\Contracts\Bus\QueryBusInterface;
 use Momo\Kernel\Support\ServiceProvider;
 
+/**
+ * @codeCoverageIgnore
+ */
 class BusServiceProvider extends ServiceProvider
 {
     public function register(): void
