@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Momo\Bus\Tests\Unit;
 
-use Contracts\CommandHandlerInterface;
-use Contracts\CommandInterface;
+use Momo\Bus\Contracts\CommandHandlerInterface;
+use Momo\Bus\Contracts\CommandInterface;
 use Momo\Bus\SynchronousCommandBus;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
