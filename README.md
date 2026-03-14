@@ -228,19 +228,6 @@ All handlers, controllers, and modules remain untouched.
 
 ---
 
-## Contracts
-
-| Interface | Implementation | Package |
-|---|---|---|
-| `CommandBusInterface` | `SynchronousCommandBus` | `momo-framework/bus` |
-| `QueryBusInterface` | `SynchronousQueryBus` | `momo-framework/bus` |
-| `CommandInterface` | your command classes | `momo-framework/contracts` |
-| `QueryInterface` | your query classes | `momo-framework/contracts` |
-| `CommandHandlerInterface` | your handler classes | `momo-framework/contracts` |
-| `QueryHandlerInterface` | your handler classes | `momo-framework/contracts` |
-
----
-
 ## Development
 
 ```bash
