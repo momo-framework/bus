@@ -5,7 +5,6 @@
   "license": "proprietary",
   "require": {
     "php": ">=8.5",
-    "momo-framework/contracts": "*",
     "momo-framework/kernel": "*"
   },
   "require-dev": {

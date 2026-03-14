@@ -11,7 +11,7 @@ use Momo\Kernel\Support\ServiceProvider;
 /**
  * @codeCoverageIgnore
  */
-class BusServiceProvider extends ServiceProvider
+final class BusServiceProvider extends ServiceProvider
 {
     public function register(): void
     {

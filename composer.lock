@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56036b34bf440f38e66c8609fa486b4d",
+    "content-hash": "4b8c68dc48d9d39af3a82c98f1e0aa1c",
     "packages": [
         {
             "name": "graham-campbell/result-type",
@@ -75,7 +75,7 @@
             "dist": {
                 "type": "path",
                 "url": "../contracts",
-                "reference": "aa4a85f905940f427f19c1e02a142e27767b6c2b"
+                "reference": "67307de8560c85acb0bf69564144f021ecc95bec"
             },
             "require": {
                 "php": ">=8.4"
@@ -97,7 +97,7 @@
             "dist": {
                 "type": "path",
                 "url": "../kernel",
-                "reference": "6d0dbd8fff79e80f0b571154cf7bed80ac2824e1"
+                "reference": "a51ac266f526d2174ab35837c611ee3977581c6d"
             },
             "require": {
                 "momo-framework/contracts": "*",
@@ -1665,8 +1665,8 @@
             "version": "2.2.x-dev",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/27743f295107e636d861d323d7b8b76fc2d32b50",
-                "reference": "27743f295107e636d861d323d7b8b76fc2d32b50",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/13920486e072c0aca363b8976e2c49f57a28061d",
+                "reference": "13920486e072c0aca363b8976e2c49f57a28061d",
                 "shasum": ""
             },
             "require": {
@@ -1712,7 +1712,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-13T11:18:48+00:00"
+            "time": "2026-03-14T09:52:28+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
