@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Momo\Bus;
 
-use Contracts\QueryBusInterface;
-use Contracts\QueryHandlerInterface;
-use Contracts\QueryInterface;
+use Momo\Bus\Contracts\QueryBusInterface;
+use Momo\Bus\Contracts\QueryHandlerInterface;
+use Momo\Bus\Contracts\QueryInterface;
 
 final class SynchronousQueryBus implements QueryBusInterface
 {

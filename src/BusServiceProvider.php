@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Momo\Bus;
 
-use Contracts\CommandBusInterface;
-use Contracts\QueryBusInterface;
+use Momo\Bus\Contracts\CommandBusInterface;
+use Momo\Bus\Contracts\QueryBusInterface;
 use Momo\Kernel\Support\ServiceProvider;
 
 /**

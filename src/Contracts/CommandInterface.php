@@ -2,6 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Contracts;
+namespace Momo\Bus\Contracts;
 
 interface CommandInterface {}
