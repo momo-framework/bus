@@ -3,7 +3,7 @@
 
   <h1>momo-framework/bus</h1>
 
-  <p>Synchronous CQRS Command & Query buses for <a href="https://github.com/momo-framework">Momo Framework</a></p>
+  <p>Synchronous in-process CQRS buses for <a href="https://github.com/momo-framework">Momo Framework</a></p>
 
   <p>
     <img src="https://github.com/momo-framework/bus/actions/workflows/ci.yml/badge.svg" alt="CI" />
@@ -26,6 +26,8 @@
 |--------------|-------------------------------------------|---------|
 | `CommandBus` | Write operations — create, update, delete | `void`  |
 | `QueryBus`   | Read operations — fetch, list, search     | `mixed` |
+
+Both buses are **always synchronous** — handlers execute in the same process, in the same request cycle. For async processing, use [`momo-framework/queue`](https://github.com/momo-framework/queue).
 
 Both buses enforce a **one-handler-per-message** contract. Registering a second handler for the same message class silently overwrites the first.
 
@@ -94,15 +96,18 @@ final class CreateOrderHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly OrderRepository $orders,
+        private readonly QueueInterface  $queue,
     ) {}
 
     public function handle(CommandInterface $command): void
     {
         assert($command instanceof CreateOrderCommand);
 
-        $this->orders->save(
-            Order::create($command->customerId, $command->items)
-        );
+        $order = Order::create($command->customerId, $command->items);
+        $this->orders->save($order);
+
+        // Heavy work goes to the queue — bus stays synchronous
+        $this->queue->push(new SendOrderEmailJob($order->id));
     }
 }
 ```
@@ -163,15 +168,8 @@ final class ShopServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->getContainerBuilder()
-            ->register(CreateOrderHandler::class)
-            ->setAutowired(true)
-            ->setPublic(true);
-
-        $this->getContainerBuilder()
-            ->register(GetOrderHandler::class)
-            ->setAutowired(true)
-            ->setPublic(true);
+        $this->singleton(CreateOrderHandler::class);
+        $this->singleton(GetOrderHandler::class);
     }
 
     public function boot(): void
@@ -187,43 +185,78 @@ final class ShopServiceProvider extends ServiceProvider
 
 ---
 
-## Why synchronous?
+## Momo package ecosystem
 
-This bus runs **in-process** — handlers execute in the same PHP process, in the same request cycle. No queues, no retries, no async complexity.
+Bus is intentionally minimal. Each concern lives in its own package:
 
 ```
-Request → CommandBus → Handler → Response
-          (same process, same memory, same transaction)
+momo-framework/bus      ← you are here
+  │   Synchronous command & query dispatch (this request, this process)
+  │
+momo-framework/events
+  │   Synchronous domain event pub/sub (this request, multiple listeners)
+  │
+momo-framework/queue
+      Async job processing (different process, different time)
 ```
 
-When you need async processing, publish a **Domain Event** from inside your handler and let a queue consumer handle it. The bus itself stays simple and predictable.
+A typical handler uses all three layers:
 
 ```php
-// Handler publishes an event — bus stays synchronous
 public function handle(CommandInterface $command): void
 {
-    $order = Order::create(...);
+    // 1. bus handled the command — save the aggregate
+    $order = Order::create($command->customerId, $command->items);
     $this->orders->save($order);
-    
-    $this->eventBus->dispatch(new OrderCreated($order->id)); // ← async happens here
+
+    // 2. events — notify other parts of the app synchronously
+    $this->eventBus->publish(new OrderCreated($order->id));
+
+    // 3. queue — offload slow work asynchronously
+    $this->queue->push(new SendConfirmationEmailJob($order->id));
+    $this->queue->push(new SyncWithCrmJob($order->id));
 }
 ```
 
 ---
 
-## Swapping the implementation
+## Development
 
-The bus is bound to an interface. To replace `SynchronousCommandBus` with an async implementation — change one line in your `ServiceProvider`, nothing else:
+```bash
+# install dependencies
+composer install
 
-```php
-// Default
-$container->setAlias(CommandBusInterface::class, SynchronousCommandBus::class);
+# run tests
+composer test
 
-// Your async implementation
-$container->setAlias(CommandBusInterface::class, AmqpCommandBus::class);
+# run tests with coverage report (requires PCOV)
+composer test:coverage
+
+# static analysis — PHPStan level 10
+composer stan
+
+# code style check
+composer lint
+
+# code style fix
+composer lint:fix
+
+# rector — check for upgrades
+composer rector:check
+
+# run full CI pipeline locally
+composer ci
 ```
 
-All handlers, controllers, and modules remain untouched.
+### CI pipeline
+
+```
+composer ci
+  ├── lint          php-cs-fixer --dry-run
+  ├── stan          phpstan level 10
+  ├── rector:check  rector --dry-run
+  └── test          phpunit
+```
 
 ---
 
