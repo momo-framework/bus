@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4b8c68dc48d9d39af3a82c98f1e0aa1c",
+    "content-hash": "8cad01f2d77dae069149e13104f94877",
     "packages": [
         {
             "name": "graham-campbell/result-type",
@@ -70,38 +70,15 @@
             "time": "2025-12-27T19:43:20+00:00"
         },
         {
-            "name": "momo-framework/contracts",
-            "version": "dev-main",
-            "dist": {
-                "type": "path",
-                "url": "../contracts",
-                "reference": "67307de8560c85acb0bf69564144f021ecc95bec"
-            },
-            "require": {
-                "php": ">=8.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Momo\\Contracts\\": "src/"
-                }
-            },
-            "transport-options": {
-                "symlink": true,
-                "relative": true
-            }
-        },
-        {
             "name": "momo-framework/kernel",
             "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "../kernel",
-                "reference": "a51ac266f526d2174ab35837c611ee3977581c6d"
+                "reference": "fac73bdb80ed3c64be0349e1b3f5ee9341a60df4"
             },
             "require": {
-                "momo-framework/contracts": "*",
-                "php": ">=8.4",
+                "php": ">=8.5",
                 "symfony/dependency-injection": "^8.0",
                 "vlucas/phpdotenv": "^5.6"
             },
@@ -1665,8 +1642,8 @@
             "version": "2.2.x-dev",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/13920486e072c0aca363b8976e2c49f57a28061d",
-                "reference": "13920486e072c0aca363b8976e2c49f57a28061d",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/4a367f4698e2ce5543cead03a4417fa5bc45401f",
+                "reference": "4a367f4698e2ce5543cead03a4417fa5bc45401f",
                 "shasum": ""
             },
             "require": {
@@ -1712,7 +1689,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-14T09:52:28+00:00"
+            "time": "2026-03-15T07:59:19+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2827,12 +2804,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "69fe73671f4301994577d6a7324b42c535f3962f"
+                "reference": "589c28bf22be71cf71bbb67db42e3303f5da4f81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/69fe73671f4301994577d6a7324b42c535f3962f",
-                "reference": "69fe73671f4301994577d6a7324b42c535f3962f",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/589c28bf22be71cf71bbb67db42e3303f5da4f81",
+                "reference": "589c28bf22be71cf71bbb67db42e3303f5da4f81",
                 "shasum": ""
             },
             "require": {
@@ -2880,7 +2857,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-12T21:46:25+00:00"
+            "time": "2026-03-15T00:58:49+00:00"
         },
         {
             "name": "sebastian/cli-parser",
