@@ -3,10 +3,10 @@
 
   <h1>momo-framework/bus</h1>
 
-<p>
-  Synchronous in-process CQRS buses for <a href="https://github.com/momo-framework">Momo Framework</a>. 
-  Provides a strictly typed interface for Command and Query dispatching within a single request cycle.
-</p>
+  <p>
+      Synchronous in-process CQRS buses for <a href="https://github.com/momo-framework">Momo Framework</a>. 
+      Provides a strictly typed interface for Command and Query dispatching within a single request cycle.
+  </p>    
 
   <p>
     <img src="https://github.com/momo-framework/bus/actions/workflows/ci.yml/badge.svg" alt="CI" />
@@ -183,41 +183,6 @@ final class ShopServiceProvider extends ServiceProvider
         $this->app->make(QueryBusInterface::class)
             ->register(GetOrderQuery::class, $this->app->make(GetOrderHandler::class));
     }
-}
-```
-
----
-
-## Momo package ecosystem
-
-Bus is intentionally minimal. Each concern lives in its own package:
-
-```
-momo-framework/bus      ← you are here
-  │   Synchronous command & query dispatch (this request, this process)
-  │
-momo-framework/events
-  │   Synchronous domain event pub/sub (this request, multiple listeners)
-  │
-momo-framework/queue
-      Async job processing (different process, different time)
-```
-
-A typical handler uses all three layers:
-
-```php
-public function handle(CommandInterface $command): void
-{
-    // 1. bus handled the command — save the aggregate
-    $order = Order::create($command->customerId, $command->items);
-    $this->orders->save($order);
-
-    // 2. events — notify other parts of the app synchronously
-    $this->eventBus->publish(new OrderCreated($order->id));
-
-    // 3. queue — offload slow work asynchronously
-    $this->queue->push(new SendConfirmationEmailJob($order->id));
-    $this->queue->push(new SyncWithCrmJob($order->id));
 }
 ```
 
