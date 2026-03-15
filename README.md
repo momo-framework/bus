@@ -3,7 +3,10 @@
 
   <h1>momo-framework/bus</h1>
 
-  <p>Synchronous in-process CQRS buses for <a href="https://github.com/momo-framework">Momo Framework</a></p>
+<p>
+  Synchronous in-process CQRS buses for <a href="https://github.com/momo-framework">Momo Framework</a>. 
+  Provides a strictly typed interface for Command and Query dispatching within a single request cycle.
+</p>
 
   <p>
     <img src="https://github.com/momo-framework/bus/actions/workflows/ci.yml/badge.svg" alt="CI" />
