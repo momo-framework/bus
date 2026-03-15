@@ -15,6 +15,7 @@ namespace Momo\Bus;
 use Momo\Bus\Contracts\QueryBusInterface;
 use Momo\Bus\Contracts\QueryHandlerInterface;
 use Momo\Bus\Contracts\QueryInterface;
+use RuntimeException;
 
 final class SynchronousQueryBus implements QueryBusInterface
 {
@@ -25,8 +26,8 @@ final class SynchronousQueryBus implements QueryBusInterface
     {
         $class = $query::class;
 
-        if (!isset($this->handlers[$class])) {
-            throw new \RuntimeException('No handler registered for query: ' . $class);
+        if (! isset($this->handlers[$class])) {
+            throw new RuntimeException('No handler registered for query: ' . $class);
         }
 
         return $this->handlers[$class]->handle($query);

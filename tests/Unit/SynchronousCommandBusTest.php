@@ -20,6 +20,9 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
+/**
+ * @internal
+ */
 #[CoversClass(SynchronousCommandBus::class)]
 final class SynchronousCommandBusTest extends TestCase
 {
@@ -159,7 +162,7 @@ final class SynchronousCommandBusTest extends TestCase
     {
         $commandA = $this->makeCommand();
         $commandB = $this->makeCommand();
-        $handler  = $this->makeCommandHandler();
+        $handler = $this->makeCommandHandler();
 
         $this->bus->register($commandA::class, $handler);
         $this->bus->register($commandB::class, $handler);
@@ -183,11 +186,11 @@ final class SynchronousCommandBusTest extends TestCase
 
 final class SpyCommandHandler implements CommandHandlerInterface
 {
-    public bool $called    = false;
+    public bool $called = false;
 
-    public int  $callCount = 0;
+    public int $callCount = 0;
 
-    public ?CommandInterface $received = null;
+    public CommandInterface|null $received = null;
 
     public function handle(CommandInterface $command): void
     {

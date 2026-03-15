@@ -15,6 +15,7 @@ namespace Momo\Bus;
 use Momo\Bus\Contracts\CommandBusInterface;
 use Momo\Bus\Contracts\CommandHandlerInterface;
 use Momo\Bus\Contracts\CommandInterface;
+use RuntimeException;
 
 final class SynchronousCommandBus implements CommandBusInterface
 {
@@ -25,8 +26,8 @@ final class SynchronousCommandBus implements CommandBusInterface
     {
         $class = $command::class;
 
-        if (!isset($this->handlers[$class])) {
-            throw new \RuntimeException('No handler registered for command: ' . $class);
+        if (! isset($this->handlers[$class])) {
+            throw new RuntimeException('No handler registered for command: ' . $class);
         }
 
         $this->handlers[$class]->handle($command);
