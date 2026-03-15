@@ -184,7 +184,9 @@ final class SynchronousCommandBusTest extends TestCase
 final class SpyCommandHandler implements CommandHandlerInterface
 {
     public bool $called    = false;
+
     public int  $callCount = 0;
+
     public ?CommandInterface $received = null;
 
     public function handle(CommandInterface $command): void
