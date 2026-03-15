@@ -11,7 +11,8 @@
     "phpunit/phpunit": "^13.0",
     "phpstan/phpstan": "^2.1",
     "friendsofphp/php-cs-fixer": "dev-master",
-    "rector/rector": "dev-main"
+    "rector/rector": "dev-main",
+    "phpstan/phpstan-strict-rules": "2.0.x-dev"
   },
   "repositories": [
     { "type": "path", "url": "../kernel",    "options": { "symlink": true } }
@@ -39,7 +40,7 @@
     "lint:fix": "php-cs-fixer fix",
     "test": "vendor/bin/phpunit",
     "test:coverage": "vendor/bin/phpunit --coverage-text",
-    "stan": "vendor/bin/phpstan analyse src --level=10",
+    "stan": "vendor/bin/phpstan analyse -c phpstan.neon",
     "rector:check": "rector process --dry-run",
     "rector:fix": "rector process",
     "ci": [

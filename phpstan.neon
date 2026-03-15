@@ -1,0 +1,21 @@
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+
+parameters:
+    level: 10
+    paths:
+        - src
+        - tests
+
+    checkExplicitMixed: true
+    checkFunctionNameCase: true
+    reportUnmatchedIgnoredErrors: true
+    checkUninitializedProperties: true
+    checkDynamicProperties: true
+    checkImplicitMixed: true
+    checkBenevolentUnionTypes: true
+
+    treatPhpDocTypesAsCertain: false
+
+    bootstrapFiles:
+        - vendor/autoload.php
