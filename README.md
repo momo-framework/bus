@@ -35,7 +35,6 @@ Both buses enforce a **one-handler-per-message** contract. Registering a second 
 
 - PHP `>= 8.5`
 - `momo-framework/kernel`
-- `momo-framework/contracts`
 
 ---
 
@@ -225,46 +224,6 @@ $container->setAlias(CommandBusInterface::class, AmqpCommandBus::class);
 ```
 
 All handlers, controllers, and modules remain untouched.
-
----
-
-## Development
-
-```bash
-# install dependencies
-composer install
-
-# run tests
-composer test
-
-# run tests with coverage report (requires PCOV or Xdebug)
-composer test:coverage
-
-# static analysis — PHPStan level 10
-composer stan
-
-# code style check
-composer lint
-
-# code style fix
-composer lint:fix
-
-# rector — check for upgrades
-composer rector:check
-
-# run full CI pipeline locally
-composer ci
-```
-
-### CI pipeline
-
-```
-composer ci
-  ├── lint          php-cs-fixer --dry-run
-  ├── stan          phpstan level 10
-  ├── rector:check  rector --dry-run
-  └── test          phpunit
-```
 
 ---
 
