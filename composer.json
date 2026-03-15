@@ -2,7 +2,7 @@
   "name": "momo-framework/bus",
   "description": "Synchronous CQRS Command and Query buses for Momo Framework",
   "type": "library",
-  "license": "proprietary",
+  "license": "AGPL-3.0-or-later",
   "require": {
     "php": ">=8.5",
     "momo-framework/kernel": "*"
