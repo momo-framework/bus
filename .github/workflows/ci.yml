@@ -6,6 +6,7 @@ on:
   pull_request:
     branches: [ main ]
 
+
 jobs:
   build:
     name: PHP ${{ matrix.php }} - CI
@@ -28,6 +29,7 @@ jobs:
           repository: momo-framework/kernel
           path: kernel
           token: ${{ secrets.GH_PAT }}
+          persist-credentials: false
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
