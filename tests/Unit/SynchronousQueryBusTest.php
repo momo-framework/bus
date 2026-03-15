@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Part of Momo Framework.
+ * Part of Momo Framework. <w33bvGL>
  *
- * @copyright Vahe Sargsyan <w33bvGL>
+ * @copyright Vahe Sargsyan
  * @license   AGPL-3.0-or-later <https://www.gnu.org/licenses/agpl-3.0.html>
  * @link      https://github.com/momo-framework
  */
 
 declare(strict_types=1);
 
-namespace Unit;
+namespace Momo\Bus\Tests\Unit;
 
 use Momo\Bus\Contracts\QueryHandlerInterface;
 use Momo\Bus\Contracts\QueryInterface;
@@ -34,7 +34,7 @@ final class SynchronousQueryBusTest extends TestCase
     public function ask_returns_value_from_handler(): void
     {
         $query   = $this->makeQuery();
-        $handler = $this->makeQueryHandler(fn(): array => ['id' => 1, 'name' => 'test']);
+        $handler = $this->makeQueryHandler(fn (): array => ['id' => 1, 'name' => 'test']);
 
         $this->bus->register($query::class, $handler);
 
@@ -45,7 +45,7 @@ final class SynchronousQueryBusTest extends TestCase
     public function ask_returns_null_when_handler_returns_null(): void
     {
         $query   = $this->makeQuery();
-        $handler = $this->makeQueryHandler(fn(): null => null);
+        $handler = $this->makeQueryHandler(fn (): null => null);
 
         $this->bus->register($query::class, $handler);
 
@@ -56,7 +56,7 @@ final class SynchronousQueryBusTest extends TestCase
     public function ask_returns_scalar_value(): void
     {
         $query   = $this->makeQuery();
-        $handler = $this->makeQueryHandler(fn(): int => 42);
+        $handler = $this->makeQueryHandler(fn (): int => 42);
 
         $this->bus->register($query::class, $handler);
 
@@ -68,7 +68,7 @@ final class SynchronousQueryBusTest extends TestCase
     {
         $query    = $this->makeQuery();
         $expected = new \stdClass();
-        $handler  = $this->makeQueryHandler(fn(): \stdClass => $expected);
+        $handler  = $this->makeQueryHandler(fn (): \stdClass => $expected);
 
         $this->bus->register($query::class, $handler);
 
@@ -136,8 +136,8 @@ final class SynchronousQueryBusTest extends TestCase
         $queryA = new class implements QueryInterface {};
         $queryB = new class implements QueryInterface {};
 
-        $handlerA = $this->makeQueryHandler(fn(): string => 'result-a');
-        $handlerB = $this->makeQueryHandler(fn(): string => 'result-b');
+        $handlerA = $this->makeQueryHandler(fn (): string => 'result-a');
+        $handlerB = $this->makeQueryHandler(fn (): string => 'result-b');
 
         $this->bus->register($queryA::class, $handlerA);
         $this->bus->register($queryB::class, $handlerB);
@@ -153,7 +153,7 @@ final class SynchronousQueryBusTest extends TestCase
         $queryB = new class implements QueryInterface {};
 
         $called   = false;
-        $handlerA = $this->makeQueryHandler(fn(): null => null);
+        $handlerA = $this->makeQueryHandler(fn (): null => null);
         $handlerB = $this->makeQueryHandler(function () use (&$called): null {
             $called = true;
             return null;
@@ -171,8 +171,8 @@ final class SynchronousQueryBusTest extends TestCase
     public function register_overwrites_previous_handler_for_same_query(): void
     {
         $query    = $this->makeQuery();
-        $handlerA = $this->makeQueryHandler(fn(): string => 'first');
-        $handlerB = $this->makeQueryHandler(fn(): string => 'second');
+        $handlerA = $this->makeQueryHandler(fn (): string => 'first');
+        $handlerB = $this->makeQueryHandler(fn (): string => 'second');
 
         $this->bus->register($query::class, $handlerA);
         $this->bus->register($query::class, $handlerB);
@@ -185,7 +185,7 @@ final class SynchronousQueryBusTest extends TestCase
     {
         $queryA  = $this->makeQuery();
         $queryB  = $this->makeQuery();
-        $handler = $this->makeQueryHandler(fn(): string => 'ok');
+        $handler = $this->makeQueryHandler(fn (): string => 'ok');
 
         $this->bus->register($queryA::class, $handler);
         $this->bus->register($queryB::class, $handler);
@@ -199,10 +199,20 @@ final class SynchronousQueryBusTest extends TestCase
         return new class implements QueryInterface {};
     }
 
+    /**
+     * @param callable(QueryInterface): mixed $returnFn
+     */
     private function makeQueryHandler(callable $returnFn): QueryHandlerInterface
     {
-        return new readonly class ($returnFn) implements QueryHandlerInterface {
-            public function __construct(private mixed $fn) {}
+        return new class ($returnFn) implements QueryHandlerInterface {
+            /** @var callable(QueryInterface): mixed */
+            private $fn;
+
+            /** @param callable(QueryInterface): mixed $fn */
+            public function __construct(callable $fn)
+            {
+                $this->fn = $fn;
+            }
 
             public function handle(QueryInterface $query): mixed
             {

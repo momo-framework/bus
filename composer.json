@@ -12,7 +12,8 @@
     "phpstan/phpstan": "^2.1",
     "friendsofphp/php-cs-fixer": "dev-master",
     "rector/rector": "dev-main",
-    "phpstan/phpstan-strict-rules": "2.0.x-dev"
+    "phpstan/phpstan-strict-rules": "2.0.x-dev",
+    "phpstan/phpstan-phpunit": "2.0.x-dev"
   },
   "repositories": [
     { "type": "path", "url": "../kernel",    "options": { "symlink": true } }

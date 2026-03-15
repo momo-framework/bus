@@ -126,15 +126,15 @@ final class SynchronousCommandBusTest extends TestCase
     }
 
     #[Test]
-    public function dispatch_does_not_return_value(): void
+    public function dispatch_returns_void(): void
     {
         $command = $this->makeCommand();
         $handler = $this->makeCommandHandler();
 
         $this->bus->register($command::class, $handler);
-        $result = $this->bus->dispatch($command);
 
-        self::assertNull($result);
+        $this->bus->dispatch($command);
+        self::assertTrue($handler->called);
     }
 
     #[Test]
@@ -175,21 +175,22 @@ final class SynchronousCommandBusTest extends TestCase
         return new class implements CommandInterface {};
     }
 
-    private function makeCommandHandler(): object
+    private function makeCommandHandler(): SpyCommandHandler
     {
-        return new class implements CommandHandlerInterface {
-            public bool $called    = false;
+        return new SpyCommandHandler();
+    }
+}
 
-            public int  $callCount = 0;
+final class SpyCommandHandler implements CommandHandlerInterface
+{
+    public bool $called    = false;
+    public int  $callCount = 0;
+    public ?CommandInterface $received = null;
 
-            public mixed $received = null;
-
-            public function handle(CommandInterface $command): void
-            {
-                $this->called = true;
-                $this->callCount++;
-                $this->received = $command;
-            }
-        };
+    public function handle(CommandInterface $command): void
+    {
+        $this->called = true;
+        $this->callCount++;
+        $this->received = $command;
     }
 }
