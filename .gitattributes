@@ -6,7 +6,3 @@
 /rector.php                 export-ignore
 /phpunit.xml                export-ignore
 /.gitignore                 export-ignore
-
-/src/                       export-all
-/README.md                  export-all
-/composer.json              export-all
