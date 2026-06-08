@@ -4,9 +4,9 @@
   <h1>momo-framework/bus</h1>
 
   <p>
-      Synchronous in-process CQRS buses for <a href="https://github.com/momo-framework">Momo Framework</a>. 
+      Synchronous in-process CQRS buses for <a href="https://github.com/momo-framework">Momo Framework</a>.
       Provides a strictly typed interface for Command and Query dispatching within a single request cycle.
-  </p>    
+  </p>
 
   <p>
     <img src="https://github.com/momo-framework/bus/actions/workflows/ci.yml/badge.svg" alt="CI" />
@@ -22,24 +22,18 @@
 
 ---
 
-## Overview / Обзор
+## Overview
 
-**EN:** `momo-framework/bus` provides two lightweight, in-process buses for separating **write** and **read** operations in your application — following the [CQRS](https://martinfowler.com/bliki/CQRS.html) pattern.
+`momo-framework/bus` provides two lightweight, in-process buses for separating **write** and **read** operations in your application — following the [CQRS](https://martinfowler.com/bliki/CQRS.html) pattern.
 
-**RU:** `momo-framework/bus` — два лёгких внутрипроцессных автобуса для разделения **операций записи** и **чтения** — по паттерну [CQRS](https://martinfowler.com/bliki/CQRS.html).
-
-| Bus / Шина   | Purpose / Назначение                      | Returns / Возврат |
-|--------------|-------------------------------------------|-------------------|
-| `CommandBus` | Write operations — create, update, delete | `void`            |
-| `QueryBus`   | Read operations — fetch, list, search     | `mixed`           |
+| Bus          | Purpose                                   | Returns  |
+|--------------|-------------------------------------------|----------|
+| `CommandBus` | Write operations — create, update, delete | `void`   |
+| `QueryBus`   | Read operations — fetch, list, search     | `mixed`  |
 
 Both buses are **always synchronous** — handlers execute in the same process, in the same request cycle. For async processing, use `momo-framework/queue`.
 
-Оба автобуса **всегда синхронны** — обработчики выполняются в том же процессе, в том же цикле запроса. Для асинхронной обработки используй `momo-framework/queue`.
-
 Both buses enforce a **one-handler-per-message** contract. Registering a second handler for the same message class silently overwrites the first.
-
-Оба автобуса соблюдают контракт **один обработчик на сообщение**. Регистрация второго обработчика для того же класса сообщения молча перезапишет первый.
 
 ---
 
@@ -60,7 +54,7 @@ composer require momo-framework/bus
 
 ---
 
-## Core concept / Основная концепция
+## Core concept
 
 ```
 HTTP / gRPC / CLI / GraphQL
@@ -81,15 +75,13 @@ HTTP / gRPC / CLI / GraphQL
 
 Adding a new protocol (gRPC, GraphQL, CLI) means writing a new adapter that dispatches the same `Command` or `Query`. **Handlers never change.**
 
-Добавление нового протокола (gRPC, GraphQL, CLI) означает написание нового адаптера, диспатчащего те же `Command` или `Query`. **Обработчики никогда не меняются.**
-
 ---
 
-## Usage / Использование
+## Usage
 
-### Commands — write side / Команды — сторона записи
+### Commands — write side
 
-Define a command as a simple readonly value object. / Определите команду как простой иммутабельный объект-значение:
+Define a command as a simple readonly value object:
 
 ```php
 final readonly class CreateOrderCommand implements CommandInterface
@@ -101,7 +93,7 @@ final readonly class CreateOrderCommand implements CommandInterface
 }
 ```
 
-Define a handler that performs the operation. / Определите обработчик, выполняющий операцию:
+Define a handler that performs the operation:
 
 ```php
 final class CreateOrderHandler implements CommandHandlerInterface
@@ -133,7 +125,7 @@ $commandBus->dispatch(new CreateOrderCommand($customerId, $items));
 
 ---
 
-### Queries — read side / Запросы — сторона чтения
+### Queries — read side
 
 Define a query:
 
@@ -173,7 +165,7 @@ $order = $queryBus->ask(new GetOrderQuery($orderId));
 
 ---
 
-### Registering in a Module ServiceProvider / Регистрация в ServiceProvider модуля
+### Registering in a Module ServiceProvider
 
 ```php
 final class ShopServiceProvider extends ServiceProvider
@@ -197,10 +189,10 @@ final class ShopServiceProvider extends ServiceProvider
 
 ---
 
-## Development / Разработка
+## Development
 
 ```bash
-# install dependencies / установка зависимостей
+# install dependencies
 composer install
 
 # run tests
