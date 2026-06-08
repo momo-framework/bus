@@ -17,6 +17,7 @@
     <img src="https://img.shields.io/badge/coverage-100%25-brightgreen.svg" alt="Coverage" />
     <img src="https://img.shields.io/badge/PHPStan-level%2010-brightblue.svg" alt="PHPStan" />
   </p>
+  <p>🇬🇧 English &nbsp;·&nbsp; 🇷🇺 <a href="README.ru.md">Русская версия</a></p>
 </div>
 
 ---
